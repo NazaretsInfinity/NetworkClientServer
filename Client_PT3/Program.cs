@@ -66,6 +66,7 @@ namespace Client_PT3
                 Console.WriteLine($"Error: {ex.Message}");
             } 
 #endif
+#if true2 // for Udp listener
             string serverAdress = "127.0.0.1";
             int port = 11000;
             UdpClient udpClient = new UdpClient();
@@ -74,21 +75,22 @@ namespace Client_PT3
             Console.WriteLine("client active, enter query.");
             while (true)
             {
-                    Console.Write("query: ");
-                    string query = Console.ReadLine();
-                    if (query == "exit")
-                    {
-                        break;
-                    }
-                    byte[] requestedBytes = Encoding.UTF8.GetBytes(query);
-                    udpClient.Send(requestedBytes, requestedBytes.Length, serverEndPoint);
+                Console.Write("query: ");
+                string query = Console.ReadLine();
+                if (query == "exit")
+                {
+                    break;
+                }
+                byte[] requestedBytes = Encoding.UTF8.GetBytes(query);
+                udpClient.Send(requestedBytes, requestedBytes.Length, serverEndPoint);
 
-                    byte[] responseBytes = udpClient.Receive(ref serverEndPoint);
-                    string response = Encoding.UTF8.GetString(responseBytes);
-                    Console.WriteLine($"Server response: {response}");
-                
+                byte[] responseBytes = udpClient.Receive(ref serverEndPoint);
+                string response = Encoding.UTF8.GetString(responseBytes);
+                Console.WriteLine($"Server response: {response}");
+
             }
-            udpClient.Close();
+            udpClient.Close(); 
+#endif
         }
     }
 }

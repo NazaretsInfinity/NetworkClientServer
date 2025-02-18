@@ -124,7 +124,8 @@ namespace Server_PT3
             }
 #endif
 
-            
+
+#if true2 // UDP LISTENER
             int port = 11000;
             UdpClient udpServer = new UdpClient(port);
             Console.WriteLine("server active");
@@ -156,7 +157,8 @@ namespace Server_PT3
                 {
                     Console.WriteLine(e.Message);
                 }
-            }
+            } 
+#endif
         }
 
         static bool isRequestAllowed(string clientAddress)

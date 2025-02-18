@@ -14,6 +14,7 @@ namespace Client_PT2
     {
         static void Main(string[] args)
         {
+#if true1
             try
             {
                 TcpClient client = new TcpClient("127.0.0.1", 5000);
@@ -41,6 +42,31 @@ namespace Client_PT2
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
+            }
+        } 
+#endif
+            string IpAdd = "127.0.0.1"; // for server 
+            int port = 1202;
+
+            Socket clientToServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            clientToServer.Connect(new IPEndPoint(IPAddress.Parse(IpAdd), port));
+            Console.WriteLine("Client is connected");
+
+
+            while (true)
+            {
+                Console.Write("Enter ip: "); string ip = Console.ReadLine();
+                Console.Write("Enter port: "); string toport = Console.ReadLine();
+                Console.Write("message: "); string message = Console.ReadLine();
+                if (message.Contains("EXIT")) break;
+                clientToServer.Send(Encoding.ASCII.GetBytes($"{ip}\\{toport}\\{message}"));
+
+                
+                byte[] buffer = new byte[1024];
+                int receivedBytes = clientToServer.Receive(buffer);
+                string response = Encoding.ASCII.GetString(buffer, 0, receivedBytes);
+
+                Console.WriteLine($"{response}");
             }
         }
     }
