@@ -39,7 +39,7 @@ namespace Client_HW1
 #endif
             //FOR CHAT 
 
-            
+
             string IpAdd = "127.0.0.1"; // for server 
             int port = 1202;
 
@@ -47,17 +47,27 @@ namespace Client_HW1
             clientToServer.Connect(new IPEndPoint(IPAddress.Parse(IpAdd), port));
             Console.WriteLine("Client is connected");
 
-          
-            Console.Write("Enter ip: "); string ip = Console.ReadLine();
-            Console.Write("Enter port: "); string toport = Console.ReadLine();
-            Console.Write("message: "); string message = Console.ReadLine();
-            clientToServer.Send(Encoding.ASCII.GetBytes($"{ip}\\{toport}\\{message}"));
 
-            byte[] buffer = new byte[1024];     
-            int receivedBytes = clientToServer.Receive(buffer);
-            string response = Encoding.ASCII.GetString(buffer, 0, receivedBytes);
+            while (true)
+            {
+                Console.WriteLine("Type query: "); string query = Console.ReadLine();
+                if (query == "SendMessage")
+                {
+                    Console.Write("Enter ip: "); string ip = Console.ReadLine();
+                    Console.Write("Enter port: "); string toport = Console.ReadLine();
+                    Console.Write("message: "); string message = Console.ReadLine();
+                    if (message.Contains("EXIT")) break;
+                    clientToServer.Send(Encoding.ASCII.GetBytes($"{ip}\\{toport}\\{message}\\{query}"));
+                }
 
-            Console.WriteLine($"{response}");
+                if (query == "Recieve messages")
+                {
+                    byte[] buffer = new byte[1024];
+                    int receivedBytes = clientToServer.Receive(buffer);
+                    string response = Encoding.ASCII.GetString(buffer, 0, receivedBytes);
+                    Console.WriteLine(response);
+                }
+            }
         }
     }
 }
