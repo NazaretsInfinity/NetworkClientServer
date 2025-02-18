@@ -76,17 +76,21 @@ namespace Server_HW1
                 {
                     try
                     {
+                        
                         int resBytes = socket.Receive(buffer);                          // send several packets
                         string[] ForRecipient = Encoding.UTF8.GetString(buffer, 0, resBytes).Split('\\');
 
                         if (ForRecipient.Contains("EXIT")) break;
 
-                        //whom send
-                        Socket friend = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        friend.Connect(new IPEndPoint(IPAddress.Parse(ForRecipient[0]), Int32.Parse(ForRecipient[1])));
-                        friend.Send(Encoding.ASCII.GetBytes(ForRecipient[2]));
-                        Console.WriteLine($" Client {socket.RemoteEndPoint} sent a message to {friend.RemoteEndPoint}\n {ForRecipient[2]}");
-                        friend.Shutdown(SocketShutdown.Both);friend.Close(); friend.Dispose();
+                        if (ForRecipient.Contains("SendMessage"))
+                        {
+                            //whom send
+                            Socket friend = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                            friend.Connect(new IPEndPoint(IPAddress.Parse(ForRecipient[0]), Int32.Parse(ForRecipient[1])));
+                            friend.Send(Encoding.ASCII.GetBytes(ForRecipient[2]));
+                            Console.WriteLine($" Client {socket.RemoteEndPoint} sent a message to {friend.RemoteEndPoint}\n {ForRecipient[2]}");
+                            friend.Shutdown(SocketShutdown.Both); friend.Close(); friend.Dispose();
+                        }
                     }
                     catch (Exception ex)
                     {
