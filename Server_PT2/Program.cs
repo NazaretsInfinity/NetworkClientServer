@@ -12,6 +12,7 @@ namespace Server_PT2
 {
     internal class Program
     {
+        //during monitoring connections we write their enter and exit here 
         private static List<string> connectionLogs = new List<string>();
         private static readonly object logLock = new object();
 
@@ -83,6 +84,8 @@ namespace Server_PT2
                 }
 
                 Console.WriteLine("Client disconnected...");
+                reader.Close();
+                writer.Close();
                 client.Close();
             }
         }
