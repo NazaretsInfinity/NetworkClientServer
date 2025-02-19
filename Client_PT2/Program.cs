@@ -30,17 +30,19 @@ namespace Client_PT2
                 {
                     Console.Write("Enter query, ya momo: ");
                     string input = Console.ReadLine(); // then we enter query
-                    writer.WriteLine(input); // then we send it back to it 
 
-                    if (input.ToLower() == "exit") // if it was exit we stop the client
-                    {
+                    writer.WriteLine(input); // then we send it to the server. SERVER IS THE ONE WHOM WE WRITE QUERIES(mostly)
+
+                    // if the query was 'exit' we stop the client
+                    if (input.ToLower() == "exit") // btw we bear in mind the registry 
                         break;
-                    }
 
-                    string quote = reader.ReadLine(); // if it's not then we read what server sent to us next, it's supposed to be a quote.
+                    // if it's anything else, then server already received it and sent us another packet(from the line a bit upper). We read it
+                    string quote = reader.ReadLine(); 
                     Console.WriteLine($"Received quote: {quote}");
                 }
 
+                //don't forget to close the connection after leaving the loop
                 client.Close();
             }
             catch (Exception ex)
