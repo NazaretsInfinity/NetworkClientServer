@@ -14,23 +14,25 @@ namespace Client_PT3
     {
         static void Main(string[] args)
         {
-#if true1 //for Tcp listener
+#if true //for Tcp listener
             try
             {
-                TcpClient client = new TcpClient("127.0.0.1", 5000);
+                TcpClient client = new TcpClient("127.0.0.1", 5000); // creating client and connecting to server which has IP and port we set in parameters.
+
+                //Getting the stream of connection for reader and writer
                 NetworkStream stream = client.GetStream();
                 StreamWriter writer = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
                 StreamReader reader = new StreamReader(stream, Encoding.UTF8);
 
-                Console.Write("login ");
-                string userName = Console.ReadLine();
+                Console.Write(reader.ReadLine()); // server sends string where client inputs login (check server_PT3 proj)
+                string userName = Console.ReadLine(); 
                 writer.WriteLine(userName);
 
-                Console.Write("pass ");
+                Console.Write(reader.ReadLine()); // then server sends string where client inputs password
                 string password = Console.ReadLine();
                 writer.WriteLine(password);
 
-                string response = reader.ReadLine();
+                string response = reader.ReadLine(); // then server sends us message with result of autentification 
                 if (response != "Autentification is valid. Type 'exit' to quit.")
                 {
                     Console.WriteLine("Access denied");
@@ -39,6 +41,8 @@ namespace Client_PT3
                 }
                 Console.WriteLine(response);
                 Console.WriteLine("input or exit");
+                
+
                 writer.WriteLine("Hello, server!");
                 while (true)
                 {
