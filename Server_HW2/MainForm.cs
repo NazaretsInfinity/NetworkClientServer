@@ -58,8 +58,7 @@ namespace Server_HW2
                         }
                         empty = !empty;
 
-                        StatusLabel.ForeColor = Color.Green;
-                        StatusLabel.Text = "User: online";
+                        StatusLabel.ForeColor = Color.Green;  StatusLabel.Text = "User: online";
 
 
                         using (sr = new StreamReader(stream, Encoding.UTF8))
@@ -76,8 +75,7 @@ namespace Server_HW2
                     }// streamwriter closes here
                     client.Close(); 
                     client = null;
-                    StatusLabel.Text = "User: offline";
-                    StatusLabel.ForeColor = Color.Red;
+                    StatusLabel.ForeColor = Color.Red; StatusLabel.Text = "User: offline";
                 }
 
             });

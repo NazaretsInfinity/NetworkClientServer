@@ -16,6 +16,9 @@ namespace Client_HW2
 {
     public partial class Form1 : Form
     {
+        string[] RandomMessages = { "wha", "what are you saying idiot", "SPEAK NORMALLY", "fuk u" };
+        Random rnd = new Random();
+
         TcpClient client = null;
         StreamReader sr = null; StreamWriter sw = null;
 
@@ -71,6 +74,12 @@ namespace Client_HW2
                         ChatTextBox.Text += $"\r\n{sr.ReadLine()}";
                         client.Close(); client = null;
                     }
+                }
+                else
+                {
+                    string mes = RandomMessages[rnd.Next(4)];
+                    sw.WriteLine(mes);
+                    ChatTextBox.Text += $"\r\n{mes}";
                 }
             }
         }
