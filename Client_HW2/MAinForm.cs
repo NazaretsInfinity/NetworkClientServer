@@ -10,6 +10,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Client_HW2
 {
@@ -17,6 +18,15 @@ namespace Client_HW2
     {
         TcpClient client = null;
         StreamReader sr = null; StreamWriter sw = null;
+
+        delegate void AddTextDelegate(String text);
+        //==========extra members end============//
+
+       
+        void AddText(string message)
+        {
+            ChatTextBox.Text += $"\n{message}";
+        }
 
         public Form1()
         {
@@ -35,6 +45,12 @@ namespace Client_HW2
                 sw = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
                 sr = new StreamReader(stream, Encoding.UTF8);
 
+                Thread ClientUpdating = new Thread(() =>
+                { 
+                 while (true) 
+                 this.Invoke(new AddTextDelegate(AddText), $"\r\n{client.Client.RemoteEndPoint}: {sr.ReadLine()}");
+                });
+                ClientUpdating.Start();
             }
             catch (Exception ex)
             {
@@ -46,8 +62,16 @@ namespace Client_HW2
         {
             if(client != null)
             {
+                if(MessageTextBox.Text != "")
+                {
                 sw.WriteLine($"{MessageTextBox.Text}");
                 ChatTextBox.Text += $"\r\n{MessageTextBox.Text}";
+                    if (MessageTextBox.Text == "Bye".ToLower())
+                    {
+                        ChatTextBox.Text += $"\r\n{sr.ReadLine()}";
+                        client.Close(); client = null;
+                    }
+                }
             }
         }
     }

@@ -32,6 +32,9 @@
             this.ServerLabel = new System.Windows.Forms.Label();
             this.SendMessageButton = new System.Windows.Forms.Button();
             this.ChatTextBox = new System.Windows.Forms.TextBox();
+            this.StatusStrip = new System.Windows.Forms.StatusStrip();
+            this.StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // MessageTextBox
@@ -71,17 +74,38 @@
             this.ChatTextBox.Size = new System.Drawing.Size(481, 178);
             this.ChatTextBox.TabIndex = 3;
             // 
+            // StatusStrip
+            // 
+            this.StatusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusLabel});
+            this.StatusStrip.Location = new System.Drawing.Point(0, 299);
+            this.StatusStrip.Name = "StatusStrip";
+            this.StatusStrip.Size = new System.Drawing.Size(551, 27);
+            this.StatusStrip.TabIndex = 4;
+            this.StatusStrip.Text = "statusStrip1";
+            // 
+            // StatusLabel
+            // 
+            this.StatusLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(93, 21);
+            this.StatusLabel.Text = "User: offline";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(551, 326);
+            this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.ChatTextBox);
             this.Controls.Add(this.SendMessageButton);
             this.Controls.Add(this.ServerLabel);
             this.Controls.Add(this.MessageTextBox);
             this.Name = "MainForm";
             this.Text = "ServerChat";
+            this.StatusStrip.ResumeLayout(false);
+            this.StatusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -93,6 +117,8 @@
         private System.Windows.Forms.Label ServerLabel;
         private System.Windows.Forms.Button SendMessageButton;
         private System.Windows.Forms.TextBox ChatTextBox;
+        private System.Windows.Forms.StatusStrip StatusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel StatusLabel;
     }
 }
 

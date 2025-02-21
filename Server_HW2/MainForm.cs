@@ -26,7 +26,6 @@ namespace Server_HW2
         Random rnd = new Random();
         delegate void AddTextDelegate(String text);
         //==========extra members end============//
-
         //FOR ADDING TEXTS FROM THREADS( for invoke)
         void AddText(string message)
         {
@@ -46,25 +45,39 @@ namespace Server_HW2
                 {
                     client = server.AcceptTcpClient();
                     NetworkStream stream = client.GetStream();
-                    sw = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
-                    if (!empty)
+                    using (sw = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true })
                     {
-                        sw.WriteLine("Server is taken by another client right now");
-                        client.Close();
-                        sw.Close();
-                        stream.Close();
-                        continue;
-                    }
-                    empty = !empty;
+
+                        if (!empty)
+                        {
+                            sw.WriteLine("Server is taken by another client right now");
+                            client.Close();
+                            sw.Close();
+                            stream.Close();
+                            continue;
+                        }
+                        empty = !empty;
+
+                        StatusLabel.ForeColor = Color.Green;
+                        StatusLabel.Text = "User: online";
 
 
-                    sr = new StreamReader(stream, Encoding.UTF8);
-                    while(client  != null)
-                    {
-                        string message = sr.ReadLine();
-                        this.Invoke(new AddTextDelegate(AddText), $"\r\n{client.Client.RemoteEndPoint}: {message}");
-                        if (message == "Bye"){ sw.WriteLine("Disconnect."); client.Close(); }
-                    }
+                        using (sr = new StreamReader(stream, Encoding.UTF8))
+                            while (client != null) //this loop is active till user closes his window or type "bye"
+                            {
+                                string message = sr.ReadLine();
+                                this.Invoke(new AddTextDelegate(AddText), $"\r\n{client.Client.RemoteEndPoint}: {message}");
+                                if (message == "Bye".ToLower()) break;
+                            }
+                        
+                        //user will be closed anyway and it has to be performed 
+                        sw.WriteLine("Disconnect.");
+                       
+                    }// streamwriter closes here
+                    client.Close(); 
+                    client = null;
+                    StatusLabel.Text = "User: offline";
+                    StatusLabel.ForeColor = Color.Red;
                 }
 
             });
